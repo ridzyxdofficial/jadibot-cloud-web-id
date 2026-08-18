@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RidzyXD Jadibot</title>
+
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#080b12;
+  color:#f5f7fb;
+  min-height:100vh
+}
+
+button,input{
+  font:inherit
+}
+
+button{
+  cursor:pointer;
+  border:0
+}
+
+.page{
+  min-height:100vh
+}
+
+.hidden{
+  display:none!important
+}
+
+/* ================================
+   HOME
+================================ */
+
+#home{
+  background:
+  radial-gradient(circle at 50% -10%,#263b68 0,transparent 38%),
+  #080b12
+}
+
+nav{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 7%;
+  border-bottom:1px solid #ffffff0d
+}
+
+.logo{
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:.3px
+}
+
+.logo span{
+  color:#6ea8ff
+}
+
+.nav-btn{
+  background:#fff;
+  color:#080b12;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:700
+}
+
+.hero{
+  max-width:950px;
+  margin:auto;
+  text-align:center;
+  padding:110px 20px 80px
+}
+
+.badge{
+  display:inline-block;
+  padding:7px 13px;
+  border:1px solid #ffffff16;
+  background:#ffffff08;
+  border-radius:30px;
+  color:#9db9e9;
+  font-size:13px;
+  margin-bottom:25px
+}
+
+.hero h1{
+  font-size:clamp(42px,8vw,76px);
+  line-height:1.03;
+  letter-spacing:-3px
+}
+
+.hero h1 span{
+  color:#72a9ff
+}
+
+.hero p{
+  max-width:650px;
+  margin:22px auto;
+  color:#929aaa;
+  line-height:1.7
+}
+
+.hero-btn{
+  background:#6ea8ff;
+  color:#06101f;
+  padding:14px 24px;
+  border-radius:12px;
+  font-weight:800;
+  box-shadow:0 10px 35px #4f8cff26
+}
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  max-width:1000px;
+  margin:0 auto;
+  padding:20px
+}
+
+.card{
+  background:#ffffff06;
+  border:1px solid #ffffff0d;
+  border-radius:16px;
+  padding:24px
+}
+
+.card b{
+  display:block;
+  margin:10px 0 7px
+}
+
+.card p{
+  font-size:13px;
+  color:#8992a3;
+  line-height:1.6
+}
+
+/* ================================
+   AUTH / GOOGLE LOGIN
+================================ */
+
+.auth{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:
+  radial-gradient(circle at 50% 0,#263a60,transparent 40%),
+  #080b12
+}
+
+.authbox{
+  width:min(410px,100%);
+  background:#0e131d;
+  border:1px solid #ffffff12;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 25px 70px #0008
+}
+
+.authbox h2{
+  margin-bottom:8px
+}
+
+.sub{
+  color:#7f8999;
+  font-size:13px;
+  margin-bottom:25px
+}
+
+/* GOOGLE BUTTON */
+
+.google-btn{
+  width:100%;
+  padding:14px 16px;
+  border-radius:11px;
+  background:#fff;
+  color:#111827;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  border:1px solid #d9dee7;
+  transition:.2s
+}
+
+.google-btn:hover{
+  background:#f4f6f9;
+  transform:translateY(-1px)
+}
+
+.google-btn:active{
+  transform:translateY(0)
+}
+
+.google-btn svg{
+  flex-shrink:0
+}
+
+.login-note{
+  margin-top:20px;
+  font-size:12px;
+  color:#7f8999;
+  line-height:1.6;
+  text-align:center
+}
+
+.login-status{
+  margin-top:15px;
+  padding:10px;
+  border-radius:9px;
+  background:#ffffff08;
+  color:#8993a3;
+  font-size:12px;
+  text-align:center;
+  display:none
+}
+
+/* ================================
+   DASHBOARD
+================================ */
+
+#dashboard{
+  display:none;
+  background:#080b12;
+  min-height:100vh
+}
+
+.side{
+  position:fixed;
+  width:230px;
+  left:0;
+  top:0;
+  bottom:0;
+  border-right:1px solid #ffffff0d;
+  background:#0a0e16;
+  padding:25px 15px
+}
+
+.side .logo{
+  padding:0 12px 30px
+}
+
+.menu{
+  display:grid;
+  gap:6px
+}
+
+.menu button{
+  padding:12px;
+  border-radius:10px;
+  background:transparent;
+  color:#929bab;
+  text-align:left
+}
+
+.menu button.active,
+.menu button:hover{
+  background:#ffffff0a;
+  color:white
+}
+
+.logout{
+  position:absolute;
+  bottom:20px;
+  left:15px;
+  right:15px
+}
+
+.main{
+  margin-left:230px;
+  padding:30px;
+  max-width:1250px
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px
+}
+
+.top p{
+  color:#7f8998;
+  font-size:13px;
+  margin-top:6px
+}
+
+.user-info{
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+
+.avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#6ea8ff;
+  color:#07101d;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  overflow:hidden
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:25px
+}
+
+.stat{
+  background:#0e131d;
+  border:1px solid #ffffff0d;
+  border-radius:15px;
+  padding:20px
+}
+
+.stat small{
+  color:#7e8796
+}
+
+.stat strong{
+  font-size:28px;
+  display:block;
+  margin-top:9px
+}
+
+.content{
+  background:#0e131d;
+  border:1px solid #ffffff0d;
+  border-radius:16px;
+  padding:22px
+}
+
+.content-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px
+}
+
+.add{
+  padding:10px 15px;
+  background:#6ea8ff;
+  border-radius:9px;
+  font-weight:700;
+  color:#07101d
+}
+
+.bot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px;
+  border:1px solid #ffffff0b;
+  border-radius:12px;
+  background:#ffffff03;
+  margin-bottom:10px
+}
+
+.bot-info{
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+
+.bot-icon{
+  width:42px;
+  height:42px;
+  border-radius:11px;
+  background:#172233;
+  display:grid;
+  place-items:center
+}
+
+.online{
+  color:#57d69a;
+  font-size:12px
+}
+
+.offline{
+  color:#ff6d79;
+  font-size:12px
+}
+
+.bot button{
+  padding:8px 12px;
+  background:#ffffff0a;
+  color:white;
+  border-radius:8px
+}
+
+/* ================================
+   MODAL
+================================ */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#000b;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  z-index:5
+}
+
+.modalbox{
+  width:min(450px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#0e131d;
+  border:1px solid #ffffff14;
+  border-radius:18px;
+  padding:25px
+}
+
+.modal-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px
+}
+
+.close{
+  background:transparent;
+  color:#8993a3;
+  font-size:22px
+}
+
+.pair{
+  background:#080c14;
+  border:1px dashed #ffffff1c;
+  border-radius:12px;
+  padding:25px;
+  text-align:center;
+  margin:15px 0
+}
+
+.pair-code{
+  font-size:27px;
+  letter-spacing:4px;
+  font-weight:800;
+  color:#72a9ff
+}
+
+.note{
+  font-size:12px;
+  color:#7f8999;
+  line-height:1.6
+}
+
+/* ================================
+   PACKAGE
+================================ */
+
+.package-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:18px 0
+}
+
+.package{
+  padding:18px;
+  border:1px solid #ffffff12;
+  border-radius:14px;
+  background:#ffffff04
+}
+
+.package h4{
+  margin:0 0 7px;
+  font-size:17px
+}
+
+.package p{
+  margin:0;
+  color:#8993a3;
+  font-size:12px;
+  line-height:1.6
+}
+
+.package .price{
+  font-size:20px;
+  font-weight:800;
+  margin:12px 0;
+  color:#72a9ff
+}
+
+.package button{
+  width:100%;
+  padding:10px;
+  border-radius:9px;
+  background:#6ea8ff;
+  color:#07101d;
+  font-weight:800
+}
+
+.public-box{
+  margin-top:15px;
+  padding:16px;
+  border:1px dashed #ffffff18;
+  border-radius:13px;
+  background:#080c14
+}
+
+.public-box b{
+  display:block;
+  margin-bottom:5px
+}
+
+.public-box span{
+  font-size:12px;
+  color:#8993a3
+}
+
+.order-info{
+  padding:15px;
+  border-radius:12px;
+  background:#080c14;
+  margin:14px 0;
+  font-size:13px;
+  line-height:1.7
+}
+
+.pay-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:12px 0
+}
+
+.pay{
+  padding:13px;
+  border-radius:10px;
+  background:#ffffff08;
+  border:1px solid #ffffff0d
+}
+
+.pay b{
+  display:block;
+  margin-bottom:4px
+}
+
+.pay small{
+  color:#8993a3
+}
+
+.pay img{
+  width:100%;
+  max-height:170px;
+  object-fit:contain;
+  border-radius:8px
+}
+
+.field{
+  margin-bottom:15px
+}
+
+.field label{
+  display:block;
+  font-size:13px;
+  color:#9ca6b7;
+  margin-bottom:7px
+}
+
+.field input{
+  width:100%;
+  padding:13px 14px;
+  border-radius:10px;
+  border:1px solid #ffffff12;
+  outline:0;
+  background:#080c14;
+  color:white
+}
+
+.field input:focus{
+  border-color:#619eff
+}
+
+.primary{
+  width:100%;
+  padding:13px;
+  background:#6ea8ff;
+  color:#07101e;
+  border-radius:10px;
+  font-weight:800
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width:700px){
+
+  .side{
+    width:100%;
+    height:65px;
+    bottom:auto;
+    display:flex;
+    padding:10px;
+    align-items:center
+  }
+
+  .side .logo{
+    padding:0;
+    margin-right:auto
+  }
+
+  .menu{
+    display:flex
+  }
+
+  .menu button{
+    font-size:0;
+    padding:10px
+  }
+
+  .menu button:first-letter{
+    font-size:18px
+  }
+
+  .logout{
+    display:none
+  }
+
+  .main{
+    margin-left:0;
+    padding:90px 15px 20px
+  }
+
+  .stats{
+    grid-template-columns:1fr
+  }
+
+  .features{
+    grid-template-columns:1fr
+  }
+
+  .hero{
+    padding-top:80px
+  }
+
+  .package-grid{
+    grid-template-columns:1fr
+  }
+
+  .pay-grid{
+    grid-template-columns:1fr
+  }
+
+  .authbox{
+    padding:25px 20px
+  }
+
+  .top{
+    align-items:flex-start
+  }
+
+  .top h2{
+    font-size:24px
+  }
+
+  .user-info{
+    gap:6px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================================
+     HOME
+================================ -->
+
+<section id="home" class="page">
+
+<nav>
+
+<div class="logo">
+RidzyXD <span>Jadibot</span>
+</div>
+
+<button class="nav-btn" onclick="showAuth()">
+Masuk
+</button>
+
+</nav>
+
+<div class="hero">
+
+<div class="badge">
+⚡ WhatsApp Bot Platform
+</div>
+
+<h1>
+Jadikan WhatsApp<br>
+<span>sebagai Bot.</span>
+</h1>
+
+<p>
+Kelola bot WhatsApp dengan mudah melalui satu dashboard sederhana,
+cepat, dan modern.
+</p>
+
+<button class="hero-btn" onclick="showAuth()">
+Mulai Sekarang →
+</button>
+
+</div>
+
+<div class="features">
+
+<div class="card">
+🤖
+<b>Multi Bot</b>
+<p>
+Kelola beberapa bot dari satu dashboard
+</p>
+</div>
+
+<div class="card">
+⚡
+<b>Mudah Digunakan</b>
+<p>
+Interface sederhana dan nyaman digunakan dari HP
+</p>
+</div>
+
+<div class="card">
+🔒
+<b>Aman</b>
+<p>
+Setiap bot dan akun dikelola secara terpisah
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================================
+     GOOGLE AUTH
+================================ -->
+
+<section id="auth" class="auth hidden">
+
+<div class="authbox">
+
+<div class="logo">
+RidzyXD Official<span>Jadibot</span>
+</div>
+
+<div style="margin-top:30px;text-align:center">
+
+<div style="
+width:64px;
+height:64px;
+margin:0 auto 18px;
+border-radius:18px;
+background:#eaf4ff;
+display:grid;
+place-items:center;
+font-size:30px;
+">
+🔐
+</div>
+
+<div style="
+font-size:12px;
+font-weight:800;
+letter-spacing:1.5px;
+color:#72a9ff;
+margin-bottom:8px;
+">
+LOGIN
+</div>
+
+<h2 style="
+font-size:30px;
+margin-bottom:10px;
+">
+Masuk ke akun
+</h2>
+
+<div class="sub">
+Gunakan akun Google agar sesi bot tersimpan dengan aman.
+</div>
+
+<button class="google-btn" onclick="loginWithGoogle()">
+
+<svg width="20" height="20" viewBox="0 0 24 24">
+
+<path fill="#4285F4"
+d="M21.35 12.23c0-.78-.07-1.53-.2-2.25H12v4.26h5.23a4.47 4.47 0 0 1-1.94 2.93v2.44h3.14c1.84-1.7 2.92-4.2 2.92-7.38z"/>
+
+<path fill="#34A853"
+d="M12 21.6c2.63 0 4.84-.87 6.45-2.35l-3.14-2.44c-.87.58-1.98.92-3.31.92-2.55 0-4.71-1.72-5.49-4.04H3.26v2.52A9.75 9.75 0 0 0 12 21.6z"/>
+
+<path fill="#FBBC05"
+d="M6.51 13.69A5.86 5.86 0 0 1 6.2 12c0-.59.1-1.16.31-1.69V7.79H3.26A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.01 4.21l3.25-2.52z"/>
+
+<path fill="#EA4335"
+d="M12 6.27c1.43 0 2.72.49 3.73 1.46l2.8-2.8C16.84 3.31 14.63 2.4 12 2.4a9.75 9.75 0 0 0-8.74 5.39l3.25 2.52C7.29 7.99 9.45 6.27 12 6.27z"/>
+
+</svg>
+
+Lanjutkan dengan Google
+
+</button>
+
+<div class="login-note">
+Dengan melanjutkan, kamu menyetujui penggunaan layanan Jadibot.
+</div>
+
+<div id="loginStatus" class="login-status"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================================
+     DASHBOARD
+================================ -->
+
+<section id="dashboard">
+
+<aside class="side">
+
+<div class="logo">
+RidzyXD Official <span>Jadibot</span>
+</div>
+
+<div class="menu">
+
+<button class="active">
+📊 Dashboard
+</button>
+
+<button>
+🤖 Bot
+</button>
+
+<button>
+⚙️ Pengaturan
+</button>
+
+</div>
+
+<button class="menu logout" onclick="logout()">
+↪ Keluar
+</button>
+
+</aside>
+
+
+<main class="main">
+
+<div class="top">
+
+<div>
+<h2>Dashboard</h2>
+<p>Kelola bot WhatsApp kamu</p>
+</div>
+
+<div class="user-info">
+
+<div id="userName" style="
+font-size:12px;
+color:#8993a3;
+max-width:150px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+">
+</div>
+
+<div class="avatar" id="avatar">
+R
+</div>
+
+</div>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<small>Total Bot</small>
+<strong id="total">0</strong>
+</div>
+
+<div class="stat">
+<small>Bot Online</small>
+<strong id="online">0</strong>
+</div>
+
+<div class="stat">
+<small>Status Server</small>
+<strong style="font-size:20px">
+● Ready
+</strong>
+</div>
+
+</div>
+
+
+<div class="content">
+
+<div class="content-head">
+
+<h3>
+Bot Saya
+</h3>
+
+<button class="add" onclick="openModal()">
++ Tambah Bot
+</button>
+
+</div>
+
+
+<div id="botList">
+
+<div style="
+text-align:center;
+padding:35px;
+color:#707a8b;
+font-size:13px
+">
+Belum ada bot. Tambahkan bot pertama kamu!
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</section>
+
+
+<!-- ================================
+     ORDER MODAL
+================================ -->
+
+<div id="modal" class="modal hidden">
+
+<div class="modalbox">
+
+<div class="modal-top">
+
+<h3 id="orderTitle">
+Pilih Layanan
+</h3>
+
+<button class="close" onclick="closeModal()">
+×
+</button>
+
+</div>
+
+
+<div id="packageStep">
+
+<div style="
+font-size:13px;
+color:#8993a3
+">
+Pilih paket Jadibot Private
+</div>
+
+
+<div class="package-grid">
+
+<div class="package">
+
+<h4>
+VIP
+</h4>
+
+<p>
+Server private dengan performa stabil & rekomended
+</p>
+
+<div class="price" id="vipPrice">
+Rp10.000 / Bulan
+</div>
+
+<button onclick="selectPackage('VIP')">
+Pilih VIP
+</button>
+
+</div>
+
+
+<div class="package">
+
+<h4>
+VVIP
+</h4>
+
+<p>
+Server private dengan performa max & anti lag
+</p>
+
+<div class="price" id="vvipPrice">
+Rp25.000 / Bulan
+</div>
+
+<button onclick="selectPackage('VVIP')">
+Pilih VVIP
+</button>
+
+</div>
+
+</div>
+
+
+<div class="public-box">
+
+<b>
+🌐 Public Jadibot
+</b>
+
+<span>
+🚧 Server belum tersedia. Fitur pairing public akan tersedia nanti.
+</span>
+
+</div>
+
+</div>
+
+
+<div id="paymentStep" class="hidden">
+
+<div class="order-info">
+
+<b id="selectedPackage">
+Paket —
+</b>
+
+<br>
+
+Pembayaran dilakukan manual melalui DANA atau QRIS,
+lalu konfirmasi ke Owner/Creator.
+
+
+<div class="pay-grid">
+
+<div class="pay">
+
+<b>
+DANA
+</b>
+
+<small id="danaInfo">
+0895392338445
+</small>
+
+</div>
+
+
+<div class="pay">
+
+<b>
+QRIS
+</b>
+
+<img
+src="https://b.top4top.io/p_38818wvqo0.jpg"
+alt="QRIS Owner"
+>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Nomor WhatsApp
+</label>
+
+<input
+id="orderNumber"
+placeholder="62895392338445"
+>
+
+</div>
+
+
+<button class="primary" onclick="confirmOrder()">
+Konfirmasi Pesanan
+</button>
+
+
+<button
+class="primary"
+style="
+margin-top:8px;
+background:#ffffff0a;
+color:white
+"
+onclick="backPackages()"
+>
+← Kembali
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =================================
+   SUPABASE CONFIG
+================================= */
+
+const SUPABASE_URL =
+"https://xfpyvoksamexbaoehzcp.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_rB083a6NzfPNgHJK_u3QMg_kXjWc5-h";
+
+
+/* =================================
+   SUPABASE CLIENT
+================================= */
+
+const {
+  createClient
+} = supabase;
+
+const supabaseClient =
+createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =================================
+   GLOBAL
+================================= */
+
+let bots=[];
+
+
+/* =================================
+   GOOGLE LOGIN
+================================= */
+
+async function loginWithGoogle(){
+
+  const status =
+    document.getElementById("loginStatus");
+
+  status.style.display="block";
+  status.textContent="Menghubungkan ke Google...";
+
+  try{
+
+    const {
+      error
+    } = await supabaseClient.auth.signInWithOAuth({
+
+      provider:"google",
+
+      options:{
+        redirectTo:
+          window.location.origin +
+          window.location.pathname
+      }
+
+    });
+
+    if(error){
+      throw error;
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    status.textContent =
+      "Login Google gagal: " +
+      error.message;
+
+  }
+
+}
+
+
+/* =================================
+   SHOW AUTH
+================================= */
+
+function showAuth(){
+
+  document
+    .getElementById("home")
+    .classList.add("hidden");
+
+  document
+    .getElementById("auth")
+    .classList.remove("hidden");
+
+}
+
+
+/* =================================
+   SHOW DASHBOARD
+================================= */
+
+function showDashboard(user){
+
+  bots =
+    JSON.parse(
+      localStorage.getItem("jadibot_bots") ||
+      "[]"
+    );
+
+
+  const metadata =
+    user.user_metadata || {};
+
+
+  const name =
+    metadata.full_name ||
+    metadata.name ||
+    user.email ||
+    "User";
+
+
+  const avatar =
+    metadata.avatar_url ||
+    metadata.picture ||
+    "";
+
+
+  document
+    .getElementById("userName")
+    .textContent =
+      name;
+
+
+  const avatarElement =
+    document.getElementById("avatar");
+
+
+  if(avatar){
+
+    avatarElement.innerHTML =
+      `<img src="${avatar}" alt="Avatar">`;
+
+  }else{
+
+    avatarElement.textContent =
+      name[0].toUpperCase();
+
+  }
+
+
+  document
+    .getElementById("auth")
+    .classList.add("hidden");
+
+  document
+    .getElementById("home")
+    .classList.add("hidden");
+
+  document
+    .getElementById("dashboard")
+    .style.display="block";
+
+
+  renderBots();
+
+}
+
+
+/* =================================
+   AUTH STATE
+================================= */
+
+supabaseClient.auth.onAuthStateChange(
+  async (event,session)=>{
+
+    console.log(
+      "Auth event:",
+      event
+    );
+
+
+    if(session?.user){
+
+      localStorage.setItem(
+        "jadibot_user",
+        JSON.stringify(session.user)
+      );
+
+      showDashboard(
+        session.user
+      );
+
+    }
+
+  }
+);
+
+
+/* =================================
+   RESTORE SESSION
+================================= */
+
+async function restoreSession(){
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if(error){
+      console.error(error);
+      return;
+    }
+
+
+    if(data.session?.user){
+
+      localStorage.setItem(
+        "jadibot_session",
+        data.session.access_token
+      );
+
+      localStorage.setItem(
+        "jadibot_user",
+        JSON.stringify(
+          data.session.user
+        )
+      );
+
+      showDashboard(
+        data.session.user
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Restore session error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =================================
+   LOGOUT
+================================= */
+
+async function logout(){
+
+  try{
+
+    await supabaseClient.auth.signOut();
+
+  }catch(error){
+
+    console.error(
+      "Logout error:",
+      error
+    );
+
+  }
+
+
+  localStorage.removeItem(
+    "jadibot_session"
+  );
+
+  localStorage.removeItem(
+    "jadibot_user"
+  );
+
+  localStorage.removeItem(
+    "jadibot_bots"
+  );
+
+
+  bots=[];
+
+
+  document
+    .getElementById("dashboard")
+    .style.display="none";
+
+
+  document
+    .getElementById("auth")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("home")
+    .classList.remove("hidden");
+
+}
+
+
+/* =================================
+   ORDER MODAL
+================================= */
+
+function openModal(){
+
+  document
+    .getElementById("modal")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("packageStep")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("paymentStep")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("orderTitle")
+    .textContent="Pilih Layanan";
+
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById("modal")
+    .classList.add("hidden");
+
+}
+
+
+function selectPackage(pkg){
+
+  document
+    .getElementById("packageStep")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("paymentStep")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("orderTitle")
+    .textContent =
+      "Pembayaran " + pkg;
+
+
+  document
+    .getElementById("selectedPackage")
+    .textContent =
+      "Paket " + pkg;
+
+}
+
+
+function backPackages(){
+
+  document
+    .getElementById("paymentStep")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("packageStep")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("orderTitle")
+    .textContent =
+      "Pilih Layanan";
+
+}
+
+
+function confirmOrder(){
+
+  const number =
+    document
+      .getElementById("orderNumber")
+      .value
+      .trim();
+
+
+  if(!number){
+
+    return alert(
+      "Masukkan nomor WhatsApp terlebih dahulu."
+    );
+
+  }
+
+
+  alert(
+    "Pesanan dicatat. Silakan selesaikan pembayaran DANA/QRIS lalu konfirmasi ke Owner/Creator."
+  );
+
+}
+
+
+/* =================================
+   BOT
+================================= */
+
+function renderBots(){
+
+  document
+    .getElementById("total")
+    .textContent =
+      bots.length;
+
+
+  document
+    .getElementById("online")
+    .textContent =
+      bots.filter(
+        x => x.status === "Online"
+      ).length;
+
+
+  const list =
+    document.getElementById(
+      "botList"
+    );
+
+
+  if(!bots.length){
+
+    list.innerHTML=`
+      <div style="
+        text-align:center;
+        padding:35px;
+        color:#707a8b;
+        font-size:13px
+      ">
+        Belum ada bot. Tambahkan bot pertama kamu!
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    bots.map(
+      (b,i)=>`
+
+      <div class="bot">
+
+        <div class="bot-info">
+
+          <div class="bot-icon">
+            🤖
+          </div>
+
+          <div>
+
+            <b>
+              Bot ${i+1}
+            </b>
+
+            <div style="
+              color:#778193;
+              font-size:12px;
+              margin-top:4px
+            ">
+              ${b.number || "-"}
+            </div>
+
+            <div class="${
+              b.status === "Online"
+              ? "online"
+              : "offline"
+            }">
+              ● ${b.status || "Offline"}
+            </div>
+
+          </div>
+
+        </div>
+
+        <button
+          onclick="removeBot(${i})"
+        >
+          Hapus
+        </button>
+
+      </div>
+
+      `
+    ).join("");
+
+}
+
+
+function removeBot(i){
+
+  bots.splice(i,1);
+
+  saveBots();
+
+  renderBots();
+
+}
+
+
+function saveBots(){
+
+  localStorage.setItem(
+    "jadibot_bots",
+    JSON.stringify(bots)
+  );
+
+}
+
+
+/* =================================
+   ESC CLOSE MODAL
+================================= */
+
+document.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Escape"){
+      closeModal();
+    }
+
+  }
+);
+
+
+/* =================================
+   START
+================================= */
+
+restoreSession();
+
+</script>
+
+</body>
+  </html>
